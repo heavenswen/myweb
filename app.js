@@ -2,13 +2,14 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+// 解析 cookie 的中间件
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //ejs模版引擎
 var ejs = require('ejs');
 //模版
 var index = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/user');
 
 var app = express();
 
@@ -26,14 +27,17 @@ app.set('view engine', 'html');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+// 加载用于解析 cookie 的中间件
 app.use(cookieParser());
+//静态目录
 app.use(express.static(path.join(__dirname, 'public')));
 
-//控制器
+//路由
 app.use('/', index);
-app.use('/users', users);
+app.use('/user', users);
 
-// catch 404 and forward to error handler 页面错误
+
+// catch 404 and forward to error handler 全局路由中间件
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;

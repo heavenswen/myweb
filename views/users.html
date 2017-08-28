@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+
+
+    <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+
+    <script>
+        axios.post("users/post?id=1", { name: 'qiu' }).then(function (json) {
+            console.log(json)
+        })
+    </script>
+
+</body>
+
+</html>
