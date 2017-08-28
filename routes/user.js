@@ -1,3 +1,5 @@
+//模块
+
 function User() {
     this.name;
     this.city;
