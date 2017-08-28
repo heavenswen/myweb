@@ -1,3 +1,4 @@
+//链接mysql 数据
 var express = require('express');
 var router = express.Router();
 // 导入MySQL模块
