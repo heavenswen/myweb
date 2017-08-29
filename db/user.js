@@ -1,3 +1,4 @@
+//mysql 查询
 var UserSQL = {  
     insert:'INSERT INTO User(uid,userName) VALUES(?,?)', 
     queryAll:'SELECT * FROM User',  

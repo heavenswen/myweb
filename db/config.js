@@ -1,3 +1,4 @@
+//mysal 接口配置
 module.exports =
     {
         mysql: {

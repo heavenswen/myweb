@@ -3,9 +3,8 @@
 var URL = require('url');
 var express = require('express');
 var router = express.Router();
-var User = require('./user');
 
-//users get 
+//users get  底层路由
 router.get('/', function (req, res, next) {
   res.render('users', { title: 'get or post' });
   //返回内容
@@ -48,7 +47,7 @@ router.all('/all', function (req, res, next) {
 //子集路由 
 router.get('/getUserInfo', function (req, res, next) {
   //调用模块
-  var user = new User();
+  var user = {};
 
   //获得链接传参
   var params = URL.parse(req.url, true).query;

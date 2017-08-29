@@ -17,6 +17,7 @@ var responseJSON = function (res, ret) {
         res.json(ret);
     }
 };
+//底层路由
 router.get('/',function(req,res,next){
     res.send('11');
 })

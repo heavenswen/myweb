@@ -9,7 +9,9 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 //模版
 var index = require('./routes/index');
-var users = require('./routes/user');
+var user = require('./routes/user');
+var users = require('./routes/users');
+var upload = require('./routes/file');
 
 var app = express();
 
@@ -34,18 +36,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //路由
 app.use('/', index);
-app.use('/user', users);
+app.use('/user', user);
+app.use('/users', users);
+app.use('/up', upload);
 
 
 // catch 404 and forward to error handler 全局路由中间件
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler 程序错误
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

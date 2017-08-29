@@ -1,7 +1,20 @@
 #Express
-<h2>是 nodejs 为web端的后端框架，提点是利用中间件处理内容</h2>
+<h2>是 nodejs 为web端的搭建的后端框架，提点是利用中间件处理内容</h2>
 
 <p><a href="http://www.expressjs.com.cn/starter/generator.html">Express 应用生成器 </a></p>
+
+<ul>
+  <h4>文件结构</h4>
+  <li>*-bin 网络服务
+  <li>-db 数据库相关
+  <li>-mode 自定义模块
+  <li>-node_modules 依赖
+  <li>*-public 应用资源
+  <li>*-routes 路由控制器
+  <li>*-views 视图
+  <li>*-app.js 应用入口
+  <li>*-package.json依赖配置
+</ul>
 
 <fieldset>
     <legend>中间件</legend>
@@ -43,3 +56,4 @@
             res.sendStatus()	设置响应状态代码，并将其以字符串形式作为响应体的一部分发送。
     </pre>
 </fieldset>
+
