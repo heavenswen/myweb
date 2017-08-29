@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+
 // 解析 cookie 的中间件
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');

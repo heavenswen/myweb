@@ -3,6 +3,16 @@
 
 <p><a href="http://www.expressjs.com.cn/starter/generator.html">Express 应用生成器 </a></p>
 
+<h4>指令</h4>
+
+<p>
+使用<code>nodemon ./bin/www</code>开发无需重启node的服务
+</p>
+<p>快速开发<code>npm run mon</code></p>
+<p>启动服务<code>node ./bin/www</code></p>
+<p>启动服务<code>npm  start</code></p>
+<a href='http://localhost:3000/' >http://localhost:3000/</a>
+
 <ul>
   <h4>文件结构</h4>
   <li>*-bin 网络服务
