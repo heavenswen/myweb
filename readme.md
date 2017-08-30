@@ -19,7 +19,7 @@
   <li>-db 数据库相关
   <li>-mode 自定义模块
   <li>-node_modules 依赖
-  <li>*-public 应用资源
+  <li>*-public 资源
   <li>*-routes 路由控制器
   <li>*-views 视图
   <li>*-app.js 应用入口

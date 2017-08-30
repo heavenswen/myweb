@@ -6,13 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>上传文件</title>
+    <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
 </head>
 
 <body>
-    <form  action="/up/upload"  enctype="multipart/form-data" method="post" >
-        <input type='file'  name="upload" multiple="multiple" />
-        <button type="submit" >上传</button>
+    <form action="/up/upload" enctype="multipart/form-data" method="post" name="form">
+        <input type="text" name='name' id='name'>
+        <input type="file" name="upload" id="">
+        <button type="button" id="sub">上传</button>
+        <button> SUB</button>
     </form>
 </body>
+<script>
+    function getData() {
+        var form = document.forms.namedItem("form");
+        var data = new FormData(form);
+        var parem = document.querySelector("#name").value;
+        axios.post('/up/upload?name=' + parem, data).then(function (json) {
+            console.log(json.data)
+        })
+    }
+
+    document.querySelector("#sub").addEventListener("click", getData)
+
+</script>
 
 </html>

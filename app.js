@@ -21,15 +21,16 @@ app.set('views', path.join(__dirname, 'views'));
 //设置html引擎
 app.engine('html', ejs.__express);
 // app.engine('jade', require('jade').__express);默认不添加
-//视图引擎
 app.set('view engine', 'html');
+//视图引擎
 // app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+//用来解析请求头和传参
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 // 加载用于解析 cookie 的中间件
 app.use(cookieParser());
 //静态目录
