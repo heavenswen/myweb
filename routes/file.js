@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
     res.render('file', { title: 'file' });
 });
 
-/* 上传*/
+// 保存文件
 router.post('/upload', function (req, res, next) {
     //生成multiparty对象，并配置上传目标路径
     //地址
@@ -21,12 +21,10 @@ router.post('/upload', function (req, res, next) {
     form.uploadDir = upFiles;
     //是否保持原有后缀
     form.keepExtensions = true;
-    //set name
     if (!req) return;
     //文件大小
 
     form.maxFieldsSize = 2 * 1024 * 1024;
-
 
     form.parse(req, function (err, fields, files) {
         if (!files) return;
@@ -62,6 +60,24 @@ router.post('/upload', function (req, res, next) {
     });
 });
 
-
+//base64
+router.post('/base64Image', function (req, res) {
+    //文件
+    var rename = req.body.name;
+    //接收前台POST过来的base64
+    var imgData = req.body.imgData;
+    //过滤data:URL
+    var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "");
+    var dataBuffer = new Buffer(base64Data, 'base64');
+    var path = upFiles + rename + '.png';
+    //写入文件
+    fs.writeFile(path, dataBuffer, function (err) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send({ path: path });
+        }
+    });
+});
 
 module.exports = router;

@@ -28,8 +28,8 @@ app.set('view engine', 'html');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-//用来解析请求头和传参
-app.use(bodyParser.json());
+//用来解析请求头和传参 limit 设置最大限制
+app.use(bodyParser.json({limit: '100mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 // 加载用于解析 cookie 的中间件
 app.use(cookieParser());

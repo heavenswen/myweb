@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WS</title>
+</head>
+
+<body>
+    <ul>
+
+
+    </ul>
+    <form>
+        <input type="text" name="name" id="name">
+        <textarea name="message" id="message" cols="30" rows="10"></textarea>
+        <button type="button" id="btn">SUb</button>
+    </form>
+
+</body>
+<script>
+    var ws = new WebSocket('ws://localhost:3000/message/ws');
+
+
+    function postmessage() {
+        var name = document.querySelector("#name");
+        var message = document.querySelector("#message");
+        //发送数据
+        ws.send({ name: name, message: message })
+    }
+
+    var btn = document.querySelector("#btn");
+    //接收
+    ws.onmessage = function (e) {
+        console.log('_message');
+        console.log(e.data);
+    };
+    ws.onerror = function (err) {
+        console.log('_error');
+        console.log(err);
+    };
+    ws.onopen = function () {
+        console.log('_connect')
+    };
+    //关闭
+    ws.onclose = function () {
+        console.log('_close');
+    };
+
+    ws.send('data');
+
+</script>
+
+</html>

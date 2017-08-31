@@ -10,7 +10,7 @@
 </p>
 <p>快速开发<code>npm run mon</code></p>
 <p>启动服务<code>node ./bin/www</code></p>
-<p>启动服务<code>npm  start</code></p>
+<p>启动服务<code>npm run start</code></p>
 <a href='http://localhost:3000/' >http://localhost:3000/</a>
 
 <ul>
