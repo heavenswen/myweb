@@ -13,8 +13,10 @@ var index = require('./routes/index');
 var user = require('./routes/user');
 var users = require('./routes/users');
 var upload = require('./routes/file');
+var message = require('./routes/ws');
 
 var app = express();
+
 
 // 设置模版引擎
 app.set('views', path.join(__dirname, 'views'));
@@ -29,7 +31,7 @@ app.set('view engine', 'html');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 //用来解析请求头和传参 limit 设置最大限制
-app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 // 加载用于解析 cookie 的中间件
 app.use(cookieParser());
@@ -41,6 +43,8 @@ app.use('/', index);
 app.use('/user', user);
 app.use('/users', users);
 app.use('/up', upload);
+app.use("/message", message);
+
 
 
 // catch 404 and forward to error handler 全局路由中间件
