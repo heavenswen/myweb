@@ -1,63 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>WS</title>
+    <title>Socket.IO chat</title>
+    <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #room {
+            width: 100%;
+            height: 100%;
+            margin-bottom: -130px;
+            padding-bottom: 100px;
+            display: none;
+        }
+
+        #room.active {
+            display: block;
+        }
+
+        #input {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #input input {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: .5%;
+        }
+
+        #input button {
+            width: 9%;
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+    </style>
 </head>
 
 <body>
-    <ul id='mess'>
-
-
-    </ul>
     <form>
-        <input type="text" name="name" id="name">
-        <textarea name="message" id="message" cols="30" rows="10"></textarea>
-        <button type="button" id="btn">SUb</button>
+        <input type="text" placeholder="房间号">
+        <input type="text" placeholder="用户名">
+        <button type="button">进入</button>
     </form>
-
+    <fieldset id="room">
+        <legend>房间号:000 <button type="button">退出</button></legend>
+        <ul id="mess"></ul>
+        <form id='input'>
+            <input id="text" autocomplete="off" /><button type="button">Send</button>
+        </form>
+    </fieldset>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        document.querySelector("button").addEventListener("click", function () {
+            var text = document.querySelector("#text")
+            var content = text.value;
+            socket.emit('chat message', content);
+            text.value = '';
+        })
+        //接收数据
+        socket.on('chat message', function (msg) {
+            var mess = document.querySelector("#mess");
+            var li = document.createElement("li");
+            li.innerHTML = msg;
+            mess.appendChild(li)
+        });
+    </script>
 </body>
-<script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
-<script>
-    var ws = new WebSocket('ws://localhost:3000/message/ws');
-
-    //发送消息
-    function postmessage() {
-        var name = document.querySelector("#name").value;
-        var message = document.querySelector("#message").value;
-        //发送数据
-        var data = { id: "1", name: name, message: message };
-        ws.send(JSON.stringify(data))
-    }
-
-    var btn = document.querySelector("#btn");
-    btn.addEventListener("click", postmessage)
-    //接收
-    ws.onmessage = function (e) {
-        console.log('_message');
-        var data = JSON.parse(e.data);
-
-        var li = document.createElement('li');
-        li.innerHTML = `<strong>${data.name}</strong>:</br>'${data.message}'`;
-        document.querySelector("#mess").appendChild(li);
-
-    };
-    ws.onerror = function (err) {
-        console.log('_error');
-        console.log(err);
-    };
-    //连接建立时触发
-    ws.onopen = function () {
-        console.log('_connect')
-    };
-    //关闭
-    ws.onclose = function () {
-        console.log('_close');
-    };
-
-</script>
 
 </html>
