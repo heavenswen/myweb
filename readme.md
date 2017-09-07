@@ -8,7 +8,7 @@
 <p>
 使用<code>nodemon ./bin/www</code>开发无需重启node的服务
 </p>
-<p>快速开发<code>npm run mon</code></p>
+<p>快速开发<code>npm run dev</code></p>
 <p>启动服务<code>node ./bin/www</code></p>
 <p>启动服务<code>npm run start</code></p>
 <a href='http://localhost:3000/' >http://localhost:3000/</a>

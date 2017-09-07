@@ -25,8 +25,13 @@
             display: none;
         }
 
-        #room.active {
+        #start,
+        #start.active~#room {
             display: block;
+        }
+
+        #start.active {
+            display: none;
         }
 
         #input {
@@ -40,62 +45,207 @@
         #input input {
             border: 0;
             padding: 10px;
-            width: 90%;
-            margin-right: .5%;
+            width: 100%;
         }
 
         #input button {
-            width: 9%;
+            width: 100%;
             background: rgb(130, 224, 255);
             border: none;
             padding: 10px;
         }
 
-        #messages {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
+
+        #users {
+            margin: 10px;
+        }
+        /* 对话框 */
+
+        #mess li {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
         }
 
-        #messages li {
-            padding: 5px 10px;
+        #mess li.me,
+        #mess li.other {
+            justify-content: flex-start;
+        }
+        /* 用户名 */
+
+        li.me strong,
+        li.other strong {
+            max-width: 20%;
         }
 
-        #messages li:nth-child(odd) {
-            background: #eee;
+        li.me strong,
+        li.other strong,
+        li.me p,
+        li.other p {
+            padding: 5px;
+        }
+
+        li.me p,
+        li.other p {
+            max-width: 60%;
+            border-radius: 5px;
+        }
+
+        li.other p {
+            text-align: left;
+            background: #39f;
+            color: #fff;
+        }
+
+        li.me p {
+            text-align: right;
+            background: #f1f1f1;
+        }
+
+        #mess li.me {
+            flex-direction: row-reverse;
         }
     </style>
 </head>
 
 <body>
-    <form>
-        <input type="text" placeholder="房间号">
-        <input type="text" placeholder="用户名">
-        <button type="button">进入</button>
+    <form id="start">
+        <input type="text" placeholder="房间号" id="id">
+        <input type="text" placeholder="用户名" id="user">
+        <button type="button" id="join">进入</button>
     </form>
     <fieldset id="room">
-        <legend>房间号:000 <button type="button">退出</button></legend>
+        <legend>房间号:<span id="roomno">000</span><button type="button" onclick="history.go(0)">退出</button></legend>
+        <fieldset id="users">
+            <legend>用户列表</legend>
+            <p></p>
+        </fieldset>
+
         <ul id="mess"></ul>
-        <form id='input'>
-            <input id="text" autocomplete="off" /><button type="button">Send</button>
-        </form>
+        <div id='input'>
+            <input id="text" autocomplete="off" />
+            <button type="button" id="chat">Send</button>
+        </div>
     </fieldset>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io();
-        document.querySelector("button").addEventListener("click", function () {
-            var text = document.querySelector("#text")
-            var content = text.value;
-            socket.emit('chat message', content);
-            text.value = '';
-        })
-        //接收数据
-        socket.on('chat message', function (msg) {
-            var mess = document.querySelector("#mess");
+        //加入房间
+        var join = document.querySelector("#join");
+        //预存socket
+        var socket = '';
+        //门
+        var views = document.querySelector("#start");
+        //chat
+        var mess = document.querySelector("#mess");
+        //房号
+        var roomno = document.querySelector("#roomno");
+        //用户列表
+        var userList = document.querySelector("#users p ");
+        //生成dom chat
+        function addDom(msg, cls) {
             var li = document.createElement("li");
             li.innerHTML = msg;
+            if (cls) li.classList.add(cls);
             mess.appendChild(li)
-        });
+        }
+
+        //加入房间
+        join.addEventListener('click', joinRoom, false);
+
+        function joinRoom() {
+            var room = document.querySelector("#id").value;
+            var user = document.querySelector("#user").value;
+            //websocket init
+            socket = io();
+            socket.emit('join', { user: user, room: room });
+            //show chat dom
+
+            //链接成功
+            socket.on('connect', () => {
+                // ...
+                views.classList.add("active");
+                text.focus()
+            });
+
+            //链接中段
+            socket.on('connect_error', (error) => {
+
+                var str = `系统提示：链接中段，请重新进入！`;
+                addDom(str);
+                //手动关闭
+                socket.close()
+            });
+
+            //接收数据
+            socket.on('chat message', function (msg) {
+
+                var str = `<strong>${msg.user}</strong><p>${msg.content}</p>`;
+                addDom(str, (msg.user === user ? 'me' : 'other'));
+
+            });
+
+            //监控系统消息 ()
+
+            //用户列表
+            function userLIstFn(users) {
+                var people = '';
+
+                for (var i = 0; i < users.length; i++) {
+
+                    people += users[i];
+                    people += (i == users.length - 1) ? ' ' : ",";
+                }
+                //用户列表
+                userList.innerHTML = people;
+            }
+
+            socket.on('sys', function (data) {
+                var state = data.state;
+                if (state === 'join') {
+                    //用户群
+                    roomno.innerHTML = data.no;
+                    //显示进入
+
+
+                    userLIstFn(data.users)
+
+                    var str = `系统提示：欢迎 ${data.user} 来到 房间${data.no}`;
+                    addDom(str);
+                } else if (state == 'leave') {
+
+                    userLIstFn(data.users)
+
+                    var str = `系统提示： ${data.user} 离开 房间${data.no}`;
+
+                    addDom(str);
+                }
+
+            })
+
+        }
+        //发送信息
+        var text = document.querySelector("#text");
+        function chatPoset() {
+            var content = text.value;
+            if (!content) return alert("内容为空!");
+            socket.emit('chat message', content);
+            //input init
+            text.value = '';
+
+        }
+        document.querySelector("#chat").addEventListener("click", chatPoset, false)
+        //回车
+        function keyfn(e) {
+            if (e && e.keyCode == 13) chatPoset();
+        }
+        text.addEventListener("focus", function () {
+
+            document.addEventListener('keyup', keyfn, false);
+        })
+        text.addEventListener("blue", function () {
+
+            document.reomveEventListener('keyup', keyfn, false);
+        })
     </script>
 </body>
 

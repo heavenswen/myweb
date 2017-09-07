@@ -22,21 +22,8 @@ var server = http.createServer(app);
 
 //websocket 
 
-var io = require('socket.io')(server); //引入socket.io模块并绑定到服务器
+var io = require('../mode/socket')(server); //引入socket.io模块并绑定到服务器
 
-//socket部分
-io.on('connection', function (client) {
-  //接收并处理客户端发送的foo事件
-  console.log('a user connected');
-  client.on('event', function (data) { });
-  client.on('disconnect', function () { });
-  //接收消息
-  client.on('chat message', function (msg) {
-    //返回
-    io.emit('chat message', msg);
-  });
-
-});
 
 //express-ws
 // var expressWs = require('express-ws');
