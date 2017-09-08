@@ -10,8 +10,8 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 //模版
 var index = require('./routes/index');
-var user = require('./routes/user');
-var users = require('./routes/users');
+var db = require('./routes/db');
+var getPost = require('./routes/getPost');
 var upload = require('./routes/file');
 var message = require('./routes/ws');
 
@@ -40,8 +40,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //路由
 app.use('/', index);
-app.use('/user', user);
-app.use('/users', users);
+app.use('/db', db);
+app.use('/getPost', getPost);
 app.use('/up', upload);
 app.use("/message", message);
 

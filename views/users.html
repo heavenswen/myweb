@@ -8,21 +8,35 @@
     <title>
         <%= title %>
     </title>
+    <% include meta.html %>
 </head>
 
 <body>
-    <form action="users/post?id=1"  method="post">
-        <input type="text" name="name" id="">
-        <button>sub</button>
-    </form>
+    <h1>
+        <%= title %>
+    </h1>
+    <fieldset>
+        <legend>get</legend>
+        <form action="/getPost/get" method="get">
+            <input type="text" name="input">
+            <button>sub</button>
+        </form>
+        <p>query:
+            <%= JSON.stringify(get) %>
+        </p>
+    </fieldset>
 
+    <fieldset>
+        <legend>post</legend>
+        <form action="/getPost/post?q=query" method="post">
+            <input type="text" name="input">
+            <button>sub</button>
+        </form>
+        <p>post:
+            <%= JSON.stringify(post) %>
+        </p>
+    </fieldset>
     <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
-
-    <script>
-        axios.post("users/post?id=1", { name: 'qiu' }).then(function (json) {
-            console.log(json)
-        })
-    </script>
 
 </body>
 

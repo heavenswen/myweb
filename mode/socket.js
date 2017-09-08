@@ -20,8 +20,6 @@ function fn(server) {
         socket.on('disconnect', function () {
             // 从房间名单中移除
             var index = roomInfo[roomID].indexOf(user);
-            console.log(index)
-
             if (index !== -1) {
                 roomInfo[roomID].splice(index, 1);
             }
