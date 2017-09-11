@@ -10,7 +10,7 @@ var post = '';//post
 
 //users get  底层路由
 router.get('/', function (req, res, next) {
-  res.render('users', { title: 'get or post' });
+  res.render('users', { title: 'get or post', get, post });
   //返回内容
   // res.send("user api");
 });
@@ -26,13 +26,14 @@ router.post('/post', function (req, res) {
   //返回文本
   // res.send(JSON.stringify(response));
   //返回到页面  
-  res.render('users', { title: 'get or post', post: response });
+  res.render('users', { title: 'get or post', post: response, get });
 });
 
 // 不管使用 GET、POST、PUT、DELETE 或其他任何 http 模块支持的 HTTP 请求，句柄都会得到执行
-router.all('/all', function (req, res, next) {
+router.all('/', function (req, res, next) {
 
-  if (req.query.all == 1) {
+  //中转
+  if (req.query) {
 
 
     next(); // 传递到下个处理器
@@ -46,7 +47,8 @@ router.all('/all', function (req, res, next) {
   }
 
 }, function (req, res) {
-  res.render('index', { title: 'All 多个回调' });
+  //next
+  res.render('users', { title: 'get or post and all', post: response, get });
 });
 
 //子集路由  get 请求
@@ -65,7 +67,7 @@ router.get('/get', function (req, res, next) {
   //返回一个json字符串
   // res.send(JSON.stringify(response));
   //返回到页面  
-  res.render('users', { title: 'get or post', get: response });
+  res.render('users', { title: 'get or post', get: response, post });
 
 });
 

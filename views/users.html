@@ -36,6 +36,13 @@
             <%= JSON.stringify(post) %>
         </p>
     </fieldset>
+
+    <fieldset>
+        <legend>all post and all 都会执行可以用 next()中转</legend>
+        <p>data:
+            <%=`post: ${JSON.stringify(post)} get: ${JSON.stringify(get)}`%>
+        </p>
+    </fieldset>
     <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
 
 </body>
