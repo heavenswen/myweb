@@ -6,22 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>db</title>
+    <% include meta.html %>
 </head>
 
 <body>
+    <h1>mysql 操作</h1>
     <fieldset>
         <legend>数据添加</legend>
-        <form action="" method="post">
-            <input type="text">
-            <button></button>
-            <p>add:</p>
+        <form action="/db/add" method="post">
+            <p>Uid&emsp;<input type="text" name='uid'></p>
+            <p>Name<input type="text" name='name'></p>
+            <p><button>ADD</button></p>
         </form>
     </fieldset>
     <fieldset>
         <legend>数据列表</legend>
-        <ul>
-            <li></li>
-        </ul>
+        <p>
+            <%= JSON.stringify(data) %>
+        </p>
     </fieldset>
 
 </body>
