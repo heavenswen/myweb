@@ -9,17 +9,10 @@ var dbConfig = require('../db/config');
 var userSQL = require('../db/user');
 
 // 1.Mysql 使用DBConfig.js的配置信息创建一个MySQL连接池
-var pool = mysql.createPool(dbConfig.mysql);
+var pool = mysql.createPool(dbConfig.connection);
 
 //2.kenx 查询器
-var knex = require('knex')({
-    client: 'mysql',
-    //配置
-    connection: dbConfig.mysql,
-
-    //链接等待
-    acquireConnectionTimeout: 10000
-});
+var knex = require('knex')(dbConfig);
 
 
 // 响应JSON数据
@@ -87,10 +80,41 @@ router.post('/add', function (req, res, next) {
 //kenx 查询
 router.get('/kenx', (req, res, next) => {
     //select * from `name`
-    let data = knex.select('*').from('User');
+    let param = req.query || req.params;
 
-    res.render("db", { data })
+
+    knex.select('*').from('User').where(param).asCallback(function (err, rows) {
+        if (err) {
+            next(err)
+        }
+
+        queryAll(rows).then((rows) => {
+            console.log(rows)
+            res.render("db", { data: rows })
+        });
+
+    })
+
+
 })
+//查询全部
+function queryAll(rows) {
+
+    return new Promise(function (resolve, reject) {
+        if (rows.length) {
+
+            resolve(rows)
+
+        } else {
+
+            knex.select('*').from('User').asCallback(function (err, rows) {
+                
+                resolve(rows)
+            })
+        }
+    })
+
+}
 
 
 module.exports = router;

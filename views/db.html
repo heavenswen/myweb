@@ -19,11 +19,25 @@
             <p><button>ADD</button></p>
         </form>
     </fieldset>
+
+    <fieldset>
+        <legend>数据查询(kenx)</legend>
+        <form action="/db/kenx" method="get">
+            <p>Uid&emsp;<input type="text" name='uid'></p>
+            <!-- <p>Name<input type="text" name='userName'></p> -->
+            <p><button type="button" data-model='search'>search</button></p>
+        </form>
+    </fieldset>
+
     <fieldset>
         <legend>数据列表</legend>
-        <p>
-            <%= JSON.stringify(data) %>
-        </p>
+        <ol>
+            <% for(let key in data ){%>
+                <li>
+                    <%= JSON.stringify(data[key]) %>
+                </li>
+                <% } %>
+        </ol>
     </fieldset>
 
 </body>
