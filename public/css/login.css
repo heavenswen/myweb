@@ -1,0 +1,52 @@
+body {
+  padding: 20px;
+  background-color: #02609b;
+}
+
+.admin-login {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 10%;
+  border-radius: 5px;
+  padding: 20px;
+  color: #fff;
+}
+
+.admin-login .title {
+  padding-bottom: 15px;
+}
+
+.admin-login li {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+.admin-login .form-vcode{
+  display: flex;
+}
+
+.admin-login li input,
+.admin-login li button {
+  width: 100%;
+  border: 0 none;
+  padding: 15px;
+  border-radius: 8px;
+}
+.admin-login .tip{
+  height: 25px;
+}
+
+.admin-login li input {
+  border: 3px solid #000;
+  font-size: 18px;
+}
+
+.admin-login li .login-btn {
+  font-size: 20px;
+  color: #fff;
+  background: rgba(47, 166, 232, 0.6);
+}
+
+.admin-login li .login-btn:active {
+  background: rgba(47, 166, 166, 0.6);
+}

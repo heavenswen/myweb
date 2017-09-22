@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <% include meta.html %>
+        <link rel="stylesheet" href="/css/login.css" />
+</head>
+
+<body>
+    <div class="admin-login">
+        <h1 class="text-center title font-normal">后台管理系统</h1>
+        <ul class="list">
+            <form>
+
+
+                <li>
+                    <input type="text" class="user" required maxlength="" placeholder="用户名" />
+                    <li>
+                        <input type="password" class="pw" required maxlength="" placeholder="密码" />
+                    </li>
+                    <!--提示-->
+                    <% if(vcode){%>
+                        <li class='form-vcode'>
+                            <img src='/vcode' />
+                            <input type="text"  required maxlength="4" placeholder="验证码" />
+                        </li>
+                        <%}%>
+                            <li class="font-red tip"></li>
+                            <li>
+                                <button type="button" class="login-btn">登录</button>
+                            </li>
+
+            </form>
+        </ul>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            //回车
+            $(".admin-login input").on("keydown", function (e) {
+                if (e.keyCode == 13) {
+                    //触发提交
+                    $(".login-btn").trigger("click");
+                }
+            })
+            //提交
+            var $tip = $(".tip");
+            $(".login-btn").on("click", function (e) {
+                var user = $(".user").val();
+                var pw = $(".pw").val();
+                var data = {};
+                if (!user) {
+                    return $tip.text("用户名不能为空！")
+                } else if (!pw) {
+                    return $tip.text("密码不能为空！")
+                }
+                var vcode = document.querySelector(".form-vcode input");
+                if (vcode && !vcode.value) {
+                    return $tip.text("验证码不为为空！");
+                }
+                if (vcode) data['vcode'] = vcode.value;
+                data['user'] = user;
+                data['pw'] = pw;
+                $.post("admin/login", data, function (json) {
+                    console.log(json)
+                })
+
+            })
+
+        })
+    </script>
+</body>
+
+</html>

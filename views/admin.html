@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>后台管理系统</title>
+	<!--头部-->
+    <% include meta.html %>
+</head>
+
+<body class="page">
+	<!--content-->
+	<div class="admin-con">
+		<!--header-->
+		<header class="admin-head">
+			<div class="admin-status">
+				 欢迎你！
+				<span class="font-white">admin| [超级管理员]</span>|
+
+				<a class="font-white" href="#">[退出]</a> |
+
+				<a href="#" class="font-white">浏览站点</a>
+			</div>
+			<nav class="admin-nav">
+				<!--
+                    	作者：423822728@qq.com
+                    	时间：2017-02-20
+                    	描述：nav a 
+                    -->
+				<a class="active" href="#side01">后台首页</a>
+				<a href="#side02">菜单</a>
+				<!--
+                    	作者：423822728@qq.com
+                    	时间：2017-02-20
+                    	描述：nav a end
+                    -->
+			</nav>
+		</header>
+		<div class="admin-side">
+			<a class="admin-side-btn"></a>
+			<ul class="admin-side-ul active" id="side01">
+				<!--side a -->
+				<li class="admin-side-item "><a href="text.html">
+						文本编辑
+					</a></li>
+				<li class="admin-side-item "><a href="login.html">
+						登录页面
+					</a></li>
+				<li class="admin-side-item "><a href="_mate.html">
+						点击打开页面
+					</a></li>
+				<!-- side a end-->
+			</ul>
+			<ul class="admin-side-ul" id="side02">
+				<!--side a -->
+				<li class="admin-side-item "><a href="https://www.baidu.com/">
+						点击打开页面
+					</a></li>
+				<li class="admin-side-item "><a href="a">
+						点击打开页面
+					</a></li>
+				<li class="admin-side-item "><a href="a">
+						点击打开页面
+					</a></li>
+				<!-- side a end-->
+			</ul>
+		</div>
+		<!--content main-->
+		<div class="admin-page">
+
+			<iframe></iframe>
+
+		</div>
+	</div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/js/common.js"></script>
+</body>
+
+</html>

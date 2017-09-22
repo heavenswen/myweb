@@ -108,13 +108,21 @@ function queryAll(rows) {
         } else {
 
             knex.select('*').from('User').asCallback(function (err, rows) {
-                
+
                 resolve(rows)
             })
         }
     })
 
 }
+//事务
+// var  promise = require('bluebird');
+router.get("/transaction", (req, res, next) => {
+    knex('shop').where('id', '=', 1).increment({ num: 10 })
+        .then(function (resp) {
+            res.send(resp);
+        })
+})
 
 
 module.exports = router;

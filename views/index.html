@@ -8,20 +8,22 @@
     <title>
         <%= title %>
     </title>
-    
+
     <!-- 嵌入页面 -->
     <% include meta.html %>
-    <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+        <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
 </head>
 
 <body>
     <h1>Holle NodeJS</h1>
     <nav>
         <strong>demos</strong>
-        <a href="/message">聊天室</a>
-        <a href="/getPost">post and get</a>
-        <a href="/db">链接数据库</a>
-        <a href="/up">文件上传</a>
+        <%for(let v of files) {%>
+
+            <a href="<%= '/'+v %>">
+                <%= v %>
+            </a>
+            <%}%>
     </nav>
 
     <fieldset>
@@ -35,14 +37,7 @@
         <p><strong>API</strong> 丰富的 HTTP 快捷方法和任意排列组合的 Connect 中间件，让你创建健壮、友好的 API 变得既快速又简单。</p>
         <p><strong>性能</strong>不对 Node.js 已有的特性进行二次抽象，我们只是在它之上扩展了 Web 应用所需的基本功能</p>
     </fieldset>
-    <ul>
-        <h4>目录结构</h4>
-        <%for(let v of files) {%>
-            <li>
-                <%= v %>
-            </li>
-            <%}%>
-    </ul>
+
 
 </body>
 
