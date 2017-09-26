@@ -47,8 +47,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //路由
-
+//根据文件生成对应路由，默认index为 /
 fs.readdir('./routes', (err, files) => {
+  let def = 'index';//default
   if (err) return err;
   //views
   for (let v of files) {
@@ -56,7 +57,7 @@ fs.readdir('./routes', (err, files) => {
     let str = '/' + file
     let fn = require("./routes/" + file)
     //设置首页导航
-    if (file == 'index') app.use('/', fn);
+    if (file == def) app.use('/', fn);
     // routes[str] = fn;
     app.use(str, fn);
 

@@ -8,12 +8,17 @@
     <title>db</title>
     <% include meta.html %>
 </head>
+<style>
+    html {
+        overflow: auto;
+    }
+</style>
 
 <body>
     <h1>mysql 操作</h1>
     <fieldset>
         <legend>数据添加</legend>
-        <form action="/db/add" method="post">
+        <form enctype="multipart/form-data" action="/db/add" method="post">
             <p>Uid&emsp;<input type="text" name='uid'></p>
             <p>Name<input type="text" name='name'></p>
             <p><button>ADD</button></p>
@@ -22,10 +27,19 @@
 
     <fieldset>
         <legend>数据查询(kenx)</legend>
-        <form action="/db/kenx" method="get">
+        <form enctype="multipart/form-data" action="/db/kenx" method="post">
             <p>Uid&emsp;<input type="text" name='uid'></p>
             <!-- <p>Name<input type="text" name='userName'></p> -->
-            <p><button type="button" data-model='search'>search</button></p>
+            <p><button>search</button></p>
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <legend>事务</legend>
+        <form enctype="multipart/form-data" action="/db/transaction" method="post">
+            <p>id&emsp;<input type="text" name='id'></p>
+            <!-- <p>Name<input type="text" name='userName'></p> -->
+            <p><button>transaction</button></p>
         </form>
     </fieldset>
 
@@ -39,7 +53,39 @@
                 <% } %>
         </ol>
     </fieldset>
+    <script>
+        (function () {
+            var btns = document.querySelectorAll("button");
+            for (let i = 0; i < btns.length; i++) {
+                btns[i].addEventListener("click", function (e) {
+                    e.preventDefault();
+                    let form = this.parentNode.parentNode
+                    let url = form.attributes.action.value
+                    let data = function () {
+                        let d = {}
+                        let cell = form.querySelectorAll("input")
+                        for (let k = 0; k < cell.length; k++) {
+                            let name = cell[k].attributes.name.value
+                            let value = cell[k].value
+                            d[name] = value
+                        }
+                        return d
+                    }()
+                    axios.post(url, (data)).then((json) => {
+                        let datas = json.data
+                        let ol = document.querySelector('ol')
+                        let li = ""
+                        for (let k in datas) {
+                            li += `<li>${JSON.stringify(datas[k])}</li>`
+                        }
+                        ol.innerHTML = li
+                    })
 
+                }, false)
+            }
+
+        })()
+    </script>
 </body>
 
 </html>

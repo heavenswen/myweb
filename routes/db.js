@@ -30,16 +30,21 @@ var responseJSON = function (res, ret) {
 router.get('/', function (req, res, next) {
 
     // 从连接池获取连接 
-    pool.getConnection(function (err, connection) {
-        // 建立连接 查询全表
-        connection.query(userSQL.queryAll, [], function (err, result) {
+    // pool.getConnection(function (err, connection) {
+    //     // 建立连接 查询全表
+    //     connection.query(userSQL.queryAll, [], function (err, result) {
 
-            res.render("db", { data: result })
+    //         // 释放连接  
+    //         connection.release();
+    //         res.render("db", { data: result })
 
-            // 释放连接  
-            connection.release();
 
-        });
+    //     });
+    // })
+    knex('User').asCallback(function (err, rows) {
+        if (err) next(err);
+        res.render("db", { data: rows })
+
     })
 
 
@@ -49,13 +54,15 @@ router.post('/add', function (req, res, next) {
 
     // 从连接池获取连接 
     pool.getConnection(function (err, connection) {
-
         // 获取前台页面传过来的参数  
         var param = req.body || req.query || req.params;
         // 建立连接 增加一个用户信息 
         connection.query(userSQL.insert, [param.uid, param.name], function (err, result) {
-            responseJSON(res, result);
+            // 释放连接  
+            connection.release();
+
             if (result) {
+
                 result = {
                     code: 200,
                     msg: '增加成功',
@@ -65,8 +72,7 @@ router.post('/add', function (req, res, next) {
             // 以json形式，把操作结果返回给前台页面     
             responseJSON(res, result);
             //res.render("db", { data: result })
-            // 释放连接  
-            connection.release();
+
 
             //重定向
             //res.location('/db');
@@ -78,19 +84,18 @@ router.post('/add', function (req, res, next) {
 });
 
 //kenx 查询
-router.get('/kenx', (req, res, next) => {
+router.post('/kenx', (req, res, next) => {
     //select * from `name`
-    let param = req.query || req.params;
-
-
-    knex.select('*').from('User').where(param).asCallback(function (err, rows) {
+    let param = req.body || req.query || req.params;
+    console.log(param)
+    //快速查询
+    knex('User').where(param).asCallback(function (err, rows) {
         if (err) {
             next(err)
         }
 
         queryAll(rows).then((rows) => {
-            console.log(rows)
-            res.render("db", { data: rows })
+            res.send(rows)
         });
 
     })
@@ -104,8 +109,8 @@ function queryAll(rows) {
         if (rows.length) {
 
             resolve(rows)
-
         } else {
+            //当不存在时查询全部
 
             knex.select('*').from('User').asCallback(function (err, rows) {
 
@@ -117,11 +122,37 @@ function queryAll(rows) {
 }
 //事务
 // var  promise = require('bluebird');
-router.get("/transaction", (req, res, next) => {
-    knex('shop').where('id', '=', 1).increment({ num: 10 })
+
+function fn(resp, trx) {
+    let num = resp[0] //获得数据库数目
+    if (num > 9) {
+        //回滚
+        trx.rollback()
+    } else {
+        //保存
+        trx.commit()
+    }
+}
+
+router.post("/transaction", (req, res, next) => {
+    let param = req.body || req.query || req.params;
+
+    knex.transaction(function (trx) {
+        knex('shop').transacting(trx).insert({ name: "2" })
+            .then(function (resp) {
+                return fn(resp, trx)
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+    })
         .then(function (resp) {
-            res.send(resp);
+            //保存
+            console.log('Transaction complete.');
         })
+        .catch(function (err) {
+            console.error(err);
+        });
+
 })
 
 
