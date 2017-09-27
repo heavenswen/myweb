@@ -123,34 +123,35 @@ function queryAll(rows) {
 //事务
 // var  promise = require('bluebird');
 
-function fn(resp, trx) {
-    let num = resp[0] //获得数据库数目
-    if (num > 9) {
-        //回滚
-        trx.rollback()
-    } else {
-        //保存
-        trx.commit()
-    }
-}
-
 router.post("/transaction", (req, res, next) => {
     let param = req.body || req.query || req.params;
 
     knex.transaction(function (trx) {
-        knex('shop').transacting(trx).insert({ name: "2" })
+        //插入一个新的数据
+        knex('shop').transacting(trx).insert({ name: param.num })
             .then(function (resp) {
-                return fn(resp, trx)
+                let length = resp[0]
+                
+                return new Promise(function (resolve, reject) {
+                    if (length > 11) {
+                        //回滚
+                        reject("err")
+                    } else {
+                        //成功
+                        resolve(trx)
+                    }
+                })
             })
             .then(trx.commit)
             .catch(trx.rollback);
     })
         .then(function (resp) {
-            //保存
-            console.log('Transaction complete.');
+            //保存成功执行
+            res.send({ state: 200, msg: 'ok' })
         })
         .catch(function (err) {
             console.error(err);
+            res.send({ state: -200, msg: 'err' })
         });
 
 })
