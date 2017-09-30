@@ -24,7 +24,7 @@
                     <% if(vcode){%>
                         <li class='form-vcode'>
                             <img src='/vcode' />
-                            <input type="text"  required maxlength="4" placeholder="验证码" />
+                            <input type="text" required maxlength="4" placeholder="验证码" />
                         </li>
                         <%}%>
                             <li class="font-red tip"></li>
@@ -63,8 +63,14 @@
                 if (vcode) data['vcode'] = vcode.value;
                 data['user'] = user;
                 data['pw'] = pw;
-                $.post("admin/login", data, function (json) {
-                    console.log(json)
+                $.post("admin_login/login", data, function (json) {
+                    if (json.code == 200) {
+                        //成功
+                        $tip.text(json.msg);
+                    } else {
+                        //失败
+                        $tip.text(json.msg);
+                    }
                 })
 
             })
